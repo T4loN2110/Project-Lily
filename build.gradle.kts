@@ -2,7 +2,7 @@ plugins {
     kotlin("jvm") version "2.3.10"
 }
 
-group = "com.t4lon.project-lily"
+group = "com.t4lon.lily"
 version = "1.0-SNAPSHOT"
 
 repositories {
