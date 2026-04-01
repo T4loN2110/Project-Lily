@@ -19,15 +19,6 @@ import java.time.Instant
 import java.util.*
 import io.qdrant.client.VectorsFactory.*
 
-data class LilyMemory(
-    val uuid: String,
-    val content: String,
-    val importance: Double,
-    val timestamp: String,
-    val entryType: String,
-    val score: Float = 0f,
-)
-
 class LilyRepository (
     private val ollamaBaseUrl: String = "http://localhost:11434",
     private val ollamaModel: String = "nomic-embed-text"
@@ -72,6 +63,8 @@ class LilyRepository (
     }
 
     private suspend fun embed(text: String): List<Float> = withContext(Dispatchers.IO) {
+        if (text.isBlank()) throw IllegalArgumentException("Text for embedding cannot be blank")
+
         val body = buildJsonObject {
             put("model", ollamaModel)
             put("prompt", text)
@@ -100,7 +93,7 @@ class LilyRepository (
     suspend fun saveMemory(
         text: String,
         importance: Double,
-        metadataType: String = "sentence",
+        metadataType: String = "raw_interaction",
         manualId: String? = null,
     ) = withContext(Dispatchers.IO) {
         val vector = embed(text)
