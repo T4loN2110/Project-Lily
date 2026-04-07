@@ -32,7 +32,7 @@ class LilyRepository (
     private val vectorSize = 768L
 
     init {
-        val grpcClient = QdrantGrpcClient.newBuilder("localhost").build()
+        val grpcClient = QdrantGrpcClient.newBuilder("localhost", 6334, false).build()
         this.client = QdrantClient(grpcClient)
 
         this.httpClient = HttpClient.newBuilder()
